@@ -43,6 +43,6 @@ getConfig = do
   cc_split_location <-
     fromMaybe Horizontal . (>>= (readSplitLocation . T.unpack <=< objectToText)) <$>
       getVarWithAlternatives ["cornelis_split_location", "cornelis_split_direction"]
-  cc_sync_load <- do
-    fromMaybe False . (objectToBool =<<) <$> getVar "cornelis_sync_load"
+  cc_sync_load <-
+    (/= (0 :: Int)) . fromMaybe 0 . (objectToInt =<<) <$> getVar "cornelis_sync_load"
   pure CornelisConfig {..}
